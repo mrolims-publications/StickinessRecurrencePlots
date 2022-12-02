@@ -28,7 +28,7 @@ L = 2**10
 # Length of the orbits
 T = int(5e3)
 # Checks if the user informed the identification for the data
-if len(sys.argv == 1):
+if len(sys.argv) == 1:
     print('You must inform d or e.\ne.g. $ python fig4de.py e')
     sys.exit()
 idntf = sys.argv[1]
