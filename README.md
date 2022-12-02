@@ -33,3 +33,11 @@ To obtain the data used in Figure 5, execute ``` python fig5a.py 1e10 ```, ``` p
 ## Figure 6
 
 To obtain the data used in Figure 6, execute ``` python fig5a.py 1e11 ```, ``` python fig5a.py 1e10 ``` and ``` python fig6b.py ```. Then execute ``` python plot_fig6.py ``` to plot the data.
+
+## Citation
+
+[http://dx.doi.org/10.5281/zenodo.7390149](http://dx.doi.org/10.5281/zenodo.7390149)
+
+## Contact
+
+[matheusrolim95@gmail.com](mailto:matheusrolim95@gmail.com)
