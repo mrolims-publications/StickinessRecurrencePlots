@@ -6,7 +6,7 @@ This project contains the code to generate and plot the data from all figures. I
 
 ## Requirements
 
-The required packages are listed in ``` requirements.txt ```. To install please execute ``` pip install -r requirements.txt ```.
+The required packages are listed in ``` requirements.txt ```. To install them please execute ``` pip install -r requirements.txt ```.
 
 To solve the "No module named 'setup'" when importing ``` pyunicorn ```, please check [https://github.com/pik-copan/pyunicorn/issues/129](https://github.com/pik-copan/pyunicorn/issues/129).
 
