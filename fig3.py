@@ -11,7 +11,7 @@ Last modified: 02/12/2022
 
 import numpy as np # NumPy module
 from joblib import Parallel, delayed # Module to create parallel loops
-from functions import lyapunov, RTE # Module with the standard map functions
+from functions import lyapunov, RTE_border # Module with the standard map functions
 import os # Module to check if the directory exists
 
 # Number of points in k
@@ -31,7 +31,7 @@ lyap = lyapunov(x, p, k, T)
 # Obtains the rte for the array above using parallel computing.
 # n_jobs=-1 uses all available threads. Set it to another value if you 
 # wish to use less.
-rte = Parallel(n_jobs=-1)(delayed(RTE)(x, p, k[i], T) for i in range(L))
+rte = Parallel(n_jobs=-1)(delayed(RTE_border)(x, p, k[i], T) for i in range(L))
 # Path to where the data will be stored
 path = 'Data/'
 # Checks if path exists

@@ -11,6 +11,8 @@ where n is the discrete time. It contains the following functions:
     * stdmap - returns the time series 
     * RTE - returns the recurrence time entropy
     * FTRTE - returns the finite-time recurrence time entropy distribution
+    * RTE_border - returns the recurrence time entropy considering border effects
+    * FTRTE_border - returns the finite-time recurrence time entropy distribution considering border effects
     * get_trappingtimes - returns the trapping times
     * get_Qtau - returns the cumulative distribution of trapping times
     * plot_params - adjust the parameters for plotting and returns the color map used in Figs. 4 and 5
@@ -179,6 +181,118 @@ def FTRTE(x0, y0, k, n, Ntot):
     y = y0
     for i in range(N):
         ftrte[i], x, y = RTE(x, y, k, n, return_last_pos=True)
+
+    return ftrte
+
+@njit
+def white_vertline_distr(recmat):
+    """
+    Returns the distribution of white vertical lines that not start nor end at the border of the RP.
+
+    Parameters
+    ----------
+    recmat : 2D-array
+        The recurrence matrix
+    
+    Returns
+    -------
+    out : 1D-array
+        The distribution of white vertical lines
+    """
+    N = recmat.shape[0]
+    P = np.zeros(N)
+    for i in range(N):
+        k = 0 # Counts the length of the white lines
+        l = 0 # Checks if the white line is not on the border
+        for j in range(N):
+            if recmat[i, j] == 0 and l != 0:
+                k += 1
+            else:
+                if k != 0:
+                    P[k] += 1
+                    k = 0
+                elif recmat[i, j] == 1:
+                    l = 1
+    
+    return P
+
+def RTE_border(x0, y0, k, T, metric='supremum', lmin=1, return_last_pos=False):
+    """
+    Return the recurrence time entropy (rte) [1] given an initial condition (`x0`, `y0`) considering border effects when evaluating the distribution of white vertical lines [2].
+    
+    Parameters
+    ----------
+    x0 : float
+        The initial value of the x-coordinate.
+    y0 : float
+        The initial value of the y-coordinate.
+    k : float
+        The non-linearity parameter of the map.
+    T : int
+        The number of iterations (length of the orbit).
+    metric : string (Optional)
+        The metric for measuring distances in phase space. The valid options are "manhattan", "euclidean" or "supremum". (Default = "supremum").
+    return_last_pos : bool (Optional)
+        If True also return the last position of the orbit. (Default = False)
+
+    Return
+    ------
+    out : tuple
+        The white vertical entropy
+        If return_last_pos = True, the second and third elements are last position in phase space (x, y).
+
+    References
+    ----------
+    [1] http://www.pik-potsdam.de/~donges/pyunicorn/api/timeseries/recurrence_plot.html
+    [2] Kraemer, K. H., Marwan, N. (2019): Border effect corrections for diagonal line based recurrence quantification analysis measures. - Physics Letters A, 383, 34, Art. 125977
+    """
+    time_series = stdmap(x0, y0, k, T)
+    rp = RP(time_series, metric=metric, normalize=False, threshold_std=10/100, silence_level=2)
+    recmat = rp.recurrence_matrix()
+    p = white_vertline_distr(recmat)
+    p = p[lmin:]
+    p = np.extract(p != 0, p)
+
+    p_normed = p/p.sum()
+
+    if return_last_pos:
+        return - (p_normed*np.log(p_normed)).sum(), time_series[-1, 0], time_series[-1, 1]
+    else:
+        return - (p_normed*np.log(p_normed)).sum()
+    
+def FTRTE_border(x0, y0, k, n, Ntot):
+    """
+    Return the distribuitions of the finite-time recurrence time entropy (ftrte) [1] considering border effects when evaluating the distribution of white vertical lines [2].
+
+    Parameters
+    ----------
+    x0 : float
+        The initial value of the x-coordinate.
+    y0 : float
+        The initial value of the y-coordinate.
+    k : float
+        The non-linearity parameter of the map.
+    n : int
+        The number of iterations (length of the orbit - finite-time).
+    Ntot : int
+        The total number of iterations.
+
+    Return
+    ------
+    out: tuple
+        The distribuitions of the ftrte.
+
+    References
+    ----------
+    [1] http://www.pik-potsdam.de/~donges/pyunicorn/api/timeseries/recurrence_plot.html
+    [2] Kraemer, K. H., Marwan, N. (2019): Border effect corrections for diagonal line based recurrence quantification analysis measures. - Physics Letters A, 383, 34, Art. 125977
+    """
+    N = round(Ntot/n)
+    ftrte = np.zeros(N)
+    x = x0
+    y = y0
+    for i in range(N):
+        ftrte[i], x, y = RTE_border(x, y, k, n, return_last_pos=True)
 
     return ftrte
 

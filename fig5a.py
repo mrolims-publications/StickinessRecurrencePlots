@@ -13,7 +13,7 @@ Last modified: 02/12/2022
 """
 
 import numpy as np # NumPy module
-from functions import FTRTE
+from functions import FTRTE_border
 import os # Module to check if the directory exists
 import sys
 
@@ -35,7 +35,7 @@ N = round(Ntot/n)
 x0 = -3.0
 p0 = 0
 # Evaluates the FTRTE distribuition
-ftrte = FTRTE(x0, p0, k, n, Ntot)
+ftrte = FTRTE_border(x0, p0, k, n, Ntot)
 # Path to where the data will be stored
 path = 'Data/'
 # Checks if path exists

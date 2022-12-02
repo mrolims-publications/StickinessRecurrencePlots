@@ -10,7 +10,7 @@ Last modified: 02/12/2022
 """
 
 import numpy as np # NumPy module
-from functions import RTE, stdmap
+from functions import RTE_border, stdmap
 import os # Module to check if the directory exists
 import sys
 
@@ -74,7 +74,7 @@ for i in range(N):
     X = ts[:, 0]
     P = ts[:, 1]
     # Evaluate the RTE for the (x, p) IC
-    ftrte, x, p = RTE(x, p, k, n, return_last_pos=True)
+    ftrte, x, p = RTE_border(x, p, k, n, return_last_pos=True)
     # Checks if RTE is on the intervals defined above. If so,
     # writes its phase-space positions to the corresponding file
     if ftrte >= s01a and ftrte <= sf1a:

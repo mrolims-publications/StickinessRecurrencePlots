@@ -17,7 +17,7 @@ Last modified: 02/12/2022
 
 import numpy as np # NumPy module
 from joblib import Parallel, delayed # Module to create parallel loops
-from functions import RTE # Module with the standard map functions
+from functions import RTE_border # Module with the standard map functions
 import os # Module to check if the directory exists
 import sys
 
@@ -51,7 +51,7 @@ x = np.linspace(x0, x1, L, endpoint=True)
 p = np.linspace(p0, p1, L, endpoint=True)
 x, p = np.meshgrid(x, p)
 # Evaluate the RTE
-rte = Parallel(n_jobs=-1)(delayed(RTE)(x[i, j], p[i, j], k, T) for i in range(L) for j in range(L))
+rte = Parallel(n_jobs=-1)(delayed(RTE_border)(x[i, j], p[i, j], k, T) for i in range(L) for j in range(L))
 rte = np.array(rte).reshape((L, L))
 # Path to where the data will be stored
 path = 'Data/'
