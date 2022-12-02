@@ -1,0 +1,7 @@
+pyunicorn
+joblib
+numpy
+pandas
+numba
+matplotlib
+scipy
