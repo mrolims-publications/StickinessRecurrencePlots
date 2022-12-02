@@ -1,9 +1,8 @@
 """
 Generates the data of Figures 5(b), 5(c) and 6(a). Simply run
 
-    $ python fig5bc_6a.py
-
-with Ntot = int(1e8) and Ntot = int(1e9).
+    $ python fig5bc_6a.py 1e8
+    $ python fig5bc_6a.py 1e9
 
 Execution time: minutes
 Author: Matheus Rolim Sales
@@ -13,13 +12,18 @@ Last modified: 02/12/2022
 import numpy as np # NumPy module
 from functions import RTE, stdmap
 import os # Module to check if the directory exists
+import sys
+
+if len(sys.argv == 1):
+    print('You must inform Ntot.\nUse 1e8 AND 1e9.')
+    sys.exit()
 
 # Non-linearity parameter
 k = 1.5
 # Finite-time
 n = 200
 # Total number of iterations
-Ntot = int(1e8)
+Ntot = int(float(sys.argv[1]))
 exponent = int(np.log10(Ntot))
 base = int(Ntot/10**exponent)
 # Number of windows of size n
@@ -86,6 +90,8 @@ for i in range(N):
         for j in range(n):
             df2.write('%.16f %.16f\n' % (X[j], P[j]))
     elif ftrte >= s03 and ftrte <= sf3 and Ntot == 1e8:
+        # Does not save when Ntot = 1e9 due to high number of points
+        # Uses Ntot = 1e8 to plot the phase space
         for j in range(n):
             df3.write('%.16f %.16f\n' % (X[j], P[j]))
 # Closes the files

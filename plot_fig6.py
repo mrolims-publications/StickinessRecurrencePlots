@@ -7,11 +7,11 @@ Make sure to run
 
     $ python fig6b.py
 
-with Ntot = int(1e11) and
+and
 
-    $ python fig5bc_6a.py
+    $ python fig5bc_6a.py 1e8
 
-with Ntot = int(1e8) before running this code.
+before running this code.
 
 Author: Matheus Rolim Sales
 Last modified: 02/12/2022

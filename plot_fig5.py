@@ -5,13 +5,14 @@ Plot Figure 5. Simply run
 
 Make sure to run
 
-    $ python fig5a.py
+    $ python fig5a.py 1e10
 
-with Ntot = int(1e10) and
+and   
 
-    $ python fig5bc_6a.py
+    $ python fig5bc_6a.py 1e8
+    $ python fig5bc_6a.py 1e9
 
-with Ntot = int(1e8) and Ntot = int(1e9) before running this code.
+before running this code.
 
 Author: Matheus Rolim Sales
 Last modified: 02/12/2022

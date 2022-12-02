@@ -5,9 +5,9 @@ Generates the data of Figure 6(b). Simply run
 
 Make sure to run
 
-    $ python fig5a.py
+    $ python fig5a.py 1e11
 
-with Ntot = int(1e11) before running this code.
+before running this code.
 
 Execution time: minutes
 Author: Matheus Rolim Sales
