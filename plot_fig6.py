@@ -9,12 +9,12 @@ Make sure to run
 
 and
 
-    $ python fig5bc_6a.py 1e8
+    $ python fig5bc_6a.py 1e7 200
 
 before running this code.
 
 Author: Matheus Rolim Sales
-Last modified: 02/12/2022
+Last modified: 05/12/2022
 """
 
 import numpy as np
@@ -39,11 +39,10 @@ bbox = {'linewidth': 0.0, 'facecolor': 'white', 'alpha': 1.0, 'pad': 1}
 # --- Fig 6(a) --- #
 ####################
 
-Ntot = int(1e8)
+Ntot = int(1e7)
 exponent = np.log10(Ntot)
 base = int(Ntot/10**exponent)
 path = 'Data/'
-
 datafile = path + 'fig6a_black_Ntot=%ie%i.dat' % (base, exponent)
 # Checks if datafile exists
 if not os.path.isfile(datafile):

@@ -10,7 +10,7 @@ Make sure to run
 before running this code.
 
 Author: Matheus Rolim Sales
-Last modified: 02/12/2022
+Last modified: 05/12/2022
 """
 
 import numpy as np
@@ -20,7 +20,7 @@ import matplotlib as mpl
 import os
 from functions import plot_params
 
-plot_params(fontsize=26, xtick_labelsize=28, ytick_labelsize=28, axes_labelsize=31)
+plot_params(fontsize=26, tick_labelsize=28, axes_labelsize=31)
 xbox = 0.0065
 ybox = 0.9
 bbox = {'linewidth': 0.0, 'facecolor': 'white', 'alpha': 1.0, 'pad': 1}
@@ -59,10 +59,3 @@ if not os.path.exists(path):
 figname = path + 'fig3.png'
 print('Saving in %s...' % figname)
 plt.savefig(figname, dpi=300, format='png')
-print('Evaluating the correlation coefficient...')
-std_y1 = np.std(lyap)
-std_y2 = np.std(rte)
-covy1y2 = np.cov(lyap, rte)[0][1]
-cc = covy1y2/(std_y1*std_y2)
-print('Correlation coefficient: %.10f' % cc)
-print('Done.')

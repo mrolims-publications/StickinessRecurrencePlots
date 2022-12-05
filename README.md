@@ -28,11 +28,11 @@ To obtain the data used in Figures 4(a) and 4(b), execute ``` python fig4ab.py a
 
 ## Figure 5
 
-To obtain the data used in Figure 5, execute ``` python fig5a.py 1e10 ```, ``` python fig5a.py 1e10 ``` and ``` python fig5bc_6a.py 1e9 ```. Then execute ``` python plot_fig5.py ``` to plot the data.
+To obtain the data used in Figure 5, execute ``` python fig5a.py 1e10 200 ```, ``` python fig5bc_6a.py 1e8 200 ``` and ``` python fig5bc_6a.py 1e9 200 ```. Then execute ``` python plot_fig5.py ``` to plot the data.
 
 ## Figure 6
 
-To obtain the data used in Figure 6, execute ``` python fig5a.py 1e11 ```, ``` python fig5a.py 1e10 ``` and ``` python fig6b.py ```. Then execute ``` python plot_fig6.py ``` to plot the data.
+To obtain the data used in Figure 6, execute ``` python fig5a.py 1e11 200 ```, ``` python fig5a.py 1e7 200 ``` and ``` python fig6b.py ```. Then execute ``` python plot_fig6.py ``` to plot the data.
 
 ## Citation
 

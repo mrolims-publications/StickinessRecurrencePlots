@@ -11,7 +11,7 @@ before running this code.
 
 Execution time: minutes
 Author: Matheus Rolim Sales
-Last modified: 02/12/2022
+Last modified: 05/12/2022
 """
 
 import numpy as np # NumPy module
@@ -40,20 +40,20 @@ print('Extracting data from %s...' % datafile)
 df = pd.read_csv(datafile, header=None, delim_whitespace=True)
 x = np.array(df[0])
 # Fig 5bc - blue
-s01a = 1.63
-sf1a = 1.745
+s01a = 0.6
+sf1a = 0.9
 # Fig 5bc - red
-s01b = sf1a
-sf1b = 1.883
+s01b = 1.2
+sf1b = 1.311
 # Fig 5bc - green
 s01c = sf1b
-sf1c = 2.01
+sf1c = 1.513
 # Fig 5bc - black
-s02 = 2.75
-sf2 = 3.05
+s02 = 1.513
+sf2 = 1.66
 # Fig 6a - black
-s03 = 4
-sf3 = 4.9
+s03 = 2.5
+sf3 = 4.0
 
 tau1a = []
 tau1b = []
