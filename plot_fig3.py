@@ -28,7 +28,8 @@ label = ['(a)', '(b)']
 
 fig, ax = plt.subplots(2, 1, sharex=True, facecolor='w', figsize=(10, 7))
 # Datafile
-datafile = 'Data/fig3.dat'
+path = 'Data/'
+datafile = path + 'fig3.dat'
 # Checks if datafile exists
 if not os.path.isfile(datafile):
     import sys
@@ -45,7 +46,7 @@ ax[1].plot(k, rte, 'k-', lw=0.7)
 print('Adjusting the plot...')
 ax[1].set_xlim(k.min(), k.max())
 ax[0].text(xbox, ybox, label[0], transform=ax[0].transAxes, bbox=bbox)
-ax[0].set_ylabel('$\\lambda$')
+ax[0].set_ylabel('$\\lambda_{\\mathrm{max}}$')
 ax[1].text(xbox, ybox, label[1], transform=ax[1].transAxes, bbox=bbox)
 ax[1].set_ylabel('RTE')
 ax[1].set_xlabel('$k$')

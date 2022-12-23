@@ -5,26 +5,28 @@ This module contains functions for the dynamical analysis of the standard map
     x_{n + 1} = x_{n} + p_{n + 1},
     p_{n + 1} = p_{n} - k * sin(x_{n}),
 
-where n is the discrete time. It contains the following functions:
+where n is the discrete time, used in the publication: "Stickiness and recurrence plots: an entropy based approach".
 
-    * lyapunov - returns the largest Lyapunov exponent
-    * stdmap - returns the time series 
-    * RTE - returns the recurrence time entropy
-    * FTRTE - returns the finite-time recurrence time entropy distribution
-    * RTE_border - returns the recurrence time entropy considering border effects
-    * FTRTE_border - returns the finite-time recurrence time entropy distribution considering border effects
-    * get_trappingtimes - returns the trapping times
-    * get_Qtau - returns the cumulative distribution of trapping times
+It contains the following functions:
+
+    * lyapunov - return the largest Lyapunov exponent
+    * stdmap - return the time series 
+    * RTE - return the recurrence time entropy
+    * FTRTE - return the finite-time recurrence time entropy distribution
+    * RTE_border - return the recurrence time entropy considering border effects
+    * FTRTE_border - return the finite-time recurrence time entropy distribution considering border effects
+    * get_trappingtimes - return the trapping times
+    * get_Qtau - return the cumulative distribution of trapping times
     * plot_params - adjust the parameters for plotting and returns the color map used in Figs. 4 and 5
 
 Author: Matheus Rolim Sales
-Last modified: 02/12/2022
+Last modified: 09/12/2022
 """
 
 import numpy as np # NumPy module
 from numba import vectorize, njit # Numba module to create fast functions
 from pyunicorn.timeseries import RecurrencePlot as RP # Pyunicorn module to create the recurrence plots
-# Plotting module
+# Plotting modules
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 
@@ -33,7 +35,7 @@ import matplotlib as mpl
            nopython=True)
 def lyapunov(x0, y0, k, N):
     """
-    Calculate the largest Lyapunov exponent for the standard map given an initial condition (`x0`, `y0`).
+    Return the largest Lyapunov exponent for the standard map given an initial condition (`x0`, `y0`).
 
     Parameters
     ------------
@@ -48,8 +50,8 @@ def lyapunov(x0, y0, k, N):
 
     Returns
     ------------
-    out : float or array
-        The largest Lyapunov exponent.
+    out : narray
+        Array with the largest Lyapunov exponent given the shape of `x0`, `y0` and `k`.
     """
     x = x0
     y = y0
@@ -77,7 +79,7 @@ def lyapunov(x0, y0, k, N):
     return lypnv
    
 @njit
-def stdmap(x0, y0, k, T):
+def stdmap(x0, y0, k, N):
     """
     Return the time series of the standard map given an initial condition (`x0`, `y0`).
 
@@ -89,19 +91,19 @@ def stdmap(x0, y0, k, T):
         The initial value of the y-coordinate.
     k : float
         The non-linearity parameter of the map.
-    T : int
+    N : int
         The number of iterations (length of the orbit).
 
     Return
     ------
-    out :  (T + 1, 2)-array
-        The time series, where u[0:T + 1, 0] = x(t) and u[0:T + 1, 1] = y(t).
+    out : narray
+        Array with the time series, where shape(out) = (N + 1, 2).
     """
-    u = np.zeros((T + 1, 2))
+    u = np.zeros((N + 1, 2))
     u[0, 0] = x0
     u[0, 1] = y0
 
-    for i in range(1, T + 1):
+    for i in range(1, N + 1):
         u[i, 1] = (u[i - 1, 1] - k*np.sin(u[i - 1, 0])) % (2*np.pi)
         u[i, 0] = (u[i - 1, 0] + u[i, 1]) % (2*np.pi)
 
@@ -114,7 +116,7 @@ def stdmap(x0, y0, k, T):
 
 def RTE(x0, y0, k, T, metric='supremum', return_last_pos=False):
     """
-    Return the recurrence time entropy (rte) [1] given an initial condition (`x0`, `y0`).
+    Return the recurrence time entropy (rte) [1-3] given an initial condition (`x0`, `y0`).
     
     Parameters
     ----------
@@ -129,29 +131,30 @@ def RTE(x0, y0, k, T, metric='supremum', return_last_pos=False):
     metric : string (Optional)
         The metric for measuring distances in phase space. The valid options are "manhattan", "euclidean" or "supremum". (Default = "supremum").
     return_last_pos : bool (Optional)
-        If True also return the last position of the orbit. (Default = False)
+        If True also return the last position of the orbit. (Default = False).
 
     Return
     ------
     out : tuple
-        The white vertical entropy
-        If return_last_pos = True, the second and third elements are last position in phase space (x, y).
+        The white vertical entropy. If return_last_pos = True, the second and third elements are last position in phase space (x, y).
 
     References
     ----------
     [1] http://www.pik-potsdam.de/~donges/pyunicorn/api/timeseries/recurrence_plot.html
+    [2] M. A. Little et al., Exploiting nonlinear recurrence and fractal scaling properties for voice disorder detection, BioMedical Engineering OnLine 6, 23 (2007)
+    [3] K. H. Kraemer et al., Recurrence threshold selection for obtaining robust recurrence characteristics in different embedding dimensions, Chaos 28, 085720 (2018)
     """
     time_series = stdmap(x0, y0, k, T)
     rp = RP(time_series, metric=metric, normalize=False, threshold_std=10/100, silence_level=2)
     rte = rp.white_vert_entropy(w_min=1)
     if return_last_pos:
-        return rte, time_series[:, 0][-1], time_series[:, 1][-1]
+        return (rte, time_series[:, 0][-1], time_series[:, 1][-1])
     else:
         return rte
 
 def FTRTE(x0, y0, k, n, Ntot):
     """
-    Return the distribuitions of the finite-time recurrence time entropy (ftrte) [1].
+    Return the finite-time recurrence time entropy (FTRTE) [1-3] distibution.
 
     Parameters
     ----------
@@ -168,12 +171,14 @@ def FTRTE(x0, y0, k, n, Ntot):
 
     Return
     ------
-    out: tuple
-        The distribuitions of the ftrte.
+    out: narray
+        Array with the FTRTE distribution.
 
     References
     ----------
     [1] http://www.pik-potsdam.de/~donges/pyunicorn/api/timeseries/recurrence_plot.html
+    [2] M. A. Little et al., Exploiting nonlinear recurrence and fractal scaling properties for voice disorder detection, BioMedical Engineering OnLine 6, 23 (2007)
+    [3] K. H. Kraemer et al., Recurrence threshold selection for obtaining robust recurrence characteristics in different embedding dimensions, Chaos 28, 085720 (2018)
     """
     N = round(Ntot/n)
     ftrte = np.zeros(N)
@@ -187,17 +192,21 @@ def FTRTE(x0, y0, k, n, Ntot):
 @njit
 def white_vertline_distr(recmat):
     """
-    Returns the distribution of white vertical lines that not start nor end at the border of the RP.
+    Return the distribution of white vertical lines that not start nor end at the border of the RP [1].
 
     Parameters
     ----------
-    recmat : 2D-array
-        The recurrence matrix
+    recmat : narray
+        The recurrence matrix.
     
     Returns
     -------
-    out : 1D-array
-        The distribution of white vertical lines
+    out : narray
+        Array with the distribution of white vertical lines given the recurrence matrix.
+
+    References
+    ----------
+    [1] K. H. Kraemer and N. Marwan, Border effect corrections for diagonal line based recurrence quantification analysis measures, Physics Letters A 383, 125977 (2019)
     """
     N = recmat.shape[0]
     P = np.zeros(N)
@@ -218,7 +227,7 @@ def white_vertline_distr(recmat):
 
 def RTE_border(x0, y0, k, T, metric='supremum', lmin=1, return_last_pos=False):
     """
-    Return the recurrence time entropy (rte) [1] given an initial condition (`x0`, `y0`) considering border effects when evaluating the distribution of white vertical lines [2].
+    Return the recurrence time entropy (rte) [1-3] given an initial condition (`x0`, `y0`) considering border effects when evaluating the distribution of white vertical lines [4].
     
     Parameters
     ----------
@@ -233,18 +242,19 @@ def RTE_border(x0, y0, k, T, metric='supremum', lmin=1, return_last_pos=False):
     metric : string (Optional)
         The metric for measuring distances in phase space. The valid options are "manhattan", "euclidean" or "supremum". (Default = "supremum").
     return_last_pos : bool (Optional)
-        If True also return the last position of the orbit. (Default = False)
+        If True also return the last position of the orbit. (Default = False).
 
     Return
     ------
     out : tuple
-        The white vertical entropy
-        If return_last_pos = True, the second and third elements are last position in phase space (x, y).
+        The white vertical entropy. If return_last_pos = True, the second and third elements are last position in phase space (x, y).
 
     References
     ----------
     [1] http://www.pik-potsdam.de/~donges/pyunicorn/api/timeseries/recurrence_plot.html
-    [2] Kraemer, K. H., Marwan, N. (2019): Border effect corrections for diagonal line based recurrence quantification analysis measures. - Physics Letters A, 383, 34, Art. 125977
+    [2] M. A. Little et al., Exploiting nonlinear recurrence and fractal scaling properties for voice disorder detection, BioMedical Engineering OnLine 6, 23 (2007)
+    [3] K. H. Kraemer et al., Recurrence threshold selection for obtaining robust recurrence characteristics in different embedding dimensions, Chaos 28, 085720 (2018)
+    [4] K. H. Kraemer and N. Marwan, Border effect corrections for diagonal line based recurrence quantification analysis measures, Physics Letters A 383, 125977 (2019)
     """
     time_series = stdmap(x0, y0, k, T)
     rp = RP(time_series, metric=metric, normalize=False, threshold_std=10/100, silence_level=2)
@@ -256,13 +266,13 @@ def RTE_border(x0, y0, k, T, metric='supremum', lmin=1, return_last_pos=False):
     p_normed = p/p.sum()
 
     if return_last_pos:
-        return - (p_normed*np.log(p_normed)).sum(), time_series[-1, 0], time_series[-1, 1]
+        return (- (p_normed*np.log(p_normed)).sum(), time_series[-1, 0], time_series[-1, 1])
     else:
         return - (p_normed*np.log(p_normed)).sum()
     
 def FTRTE_border(x0, y0, k, n, Ntot):
     """
-    Return the distribuitions of the finite-time recurrence time entropy (ftrte) [1] considering border effects when evaluating the distribution of white vertical lines [2].
+    Return the finite-time recurrence time entropy (FTRTE) [1-3] distibution considering border effects when evaluating the distribution of white vertical lines [4].
 
     Parameters
     ----------
@@ -279,13 +289,15 @@ def FTRTE_border(x0, y0, k, n, Ntot):
 
     Return
     ------
-    out: tuple
-        The distribuitions of the ftrte.
+    out: narray
+        Array with the FTRTE distribution.
 
     References
     ----------
     [1] http://www.pik-potsdam.de/~donges/pyunicorn/api/timeseries/recurrence_plot.html
-    [2] Kraemer, K. H., Marwan, N. (2019): Border effect corrections for diagonal line based recurrence quantification analysis measures. - Physics Letters A, 383, 34, Art. 125977
+    [2] M. A. Little et al., Exploiting nonlinear recurrence and fractal scaling properties for voice disorder detection, BioMedical Engineering OnLine 6, 23 (2007)
+    [3] K. H. Kraemer et al., Recurrence threshold selection for obtaining robust recurrence characteristics in different embedding dimensions, Chaos 28, 085720 (2018)
+    [4] K. H. Kraemer and N. Marwan, Border effect corrections for diagonal line based recurrence quantification analysis measures, Physics Letters A 383, 125977 (2019)
     """
     N = round(Ntot/n)
     ftrte = np.zeros(N)
@@ -304,16 +316,16 @@ def get_trappingtimes(x, s0, sf):
     Parameters
     ----------
 
-    x : 1D-array
-        The RTE time series
+    x : array
+        The RTE time series.
     s0 : float
-        Beginning of the interval
+        Beginning of the interval.
     sf : float
-        Ending of the interval
+        Ending of the interval.
 
     Returns
     -------
-    out : 1D-list
+    out : narray
         The trapping times
     """
     tau = []
@@ -324,7 +336,7 @@ def get_trappingtimes(x, s0, sf):
         elif count != 0:
             tau.append(count)
             count = 0
-    return tau
+    return np.array(tau)
 
 def get_Qtau(tau, nts):
     """
@@ -333,16 +345,16 @@ def get_Qtau(tau, nts):
     Parameters
     ----------
 
-    tau : 1D-array
-        The trapping times
+    tau : array
+        The trapping times.
     nts : int
-        Number of points of Q
+        Number of points of Q.
 
     Returns
     -------
     
-    out : (1D-array, 1D-array)
-        The cumulative times and the cumulative distribuition of trapping times
+    out : narray
+        The cumulative times and the cumulative distribuition of trapping times.
     """
     t = np.logspace(np.log10(1), np.log10(max(tau)), nts)
     Q = np.zeros(len(t))
@@ -358,8 +370,8 @@ def plot_params(fontsize=14, tick_labelsize=17, axes_labelsize=20, legend_fontsi
     """
     Update the parameters of the plot.
 
-    Return
-    ------
+    Returns
+    -------
     out : string
         The color map used in the colored plots.
     """

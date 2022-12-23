@@ -2,7 +2,7 @@
 
 Code repository accompanying the publication "*Stickiness and recurrence plots: an entropy based approach*".
 
-This project contains the code to generate and plot the data from all figures. It uses the [pyunicorn package](http://www.pik-potsdam.de/~donges/pyunicorn/) to create the recurrence plots and obtain the recurrence quantificators.
+This project contains the code to generate and plot the data from all figures. It uses the [pyunicorn package](http://www.pik-potsdam.de/~donges/pyunicorn/) to create the recurrence plots.
 
 ## Requirements
 
@@ -36,7 +36,7 @@ To obtain the data used in Figure 6, execute ``` python fig5a.py 1e11 200 ```, `
 
 ## Citation
 
-[http://dx.doi.org/10.5281/zenodo.7390149](http://dx.doi.org/10.5281/zenodo.7390149)
+[Zenodo](https://doi.org/10.5281/zenodo.7390148)
 
 ## Contact
 

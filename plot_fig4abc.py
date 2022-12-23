@@ -28,8 +28,9 @@ bbox = {'linewidth': 0.0, 'facecolor': 'white', 'alpha': 1.0, 'pad': 1}
 label = 'abc'
 xl = ['x', 'x', 'k']
 fig, ax = plt.subplots(1, 3, facecolor='w', figsize=(16, 5))
+path = 'Data/'
 for i in range(len(label)):
-    datafile = 'Data/fig4%s.dat' % label[i]
+    datafile = path + 'fig4%s.dat' % label[i]
     # Checks if datafile exists
     if not os.path.isfile(datafile):
         import sys
@@ -72,7 +73,7 @@ for i in range(len(label)):
 ax[0].set_ylabel('$p$')
 
 cbar_ax = fig.add_axes([0.935, 0.165, 0.008, 0.97-0.165])
-cbar = fig.colorbar(hm, cax=cbar_ax, label='$\\lambda$')
+cbar = fig.colorbar(hm, cax=cbar_ax, label='$\\lambda_{\\mathrm{max}}$')
 plt.subplots_adjust(left=0.055, bottom=0.165, right=0.93, top=0.97, wspace=0.17)
 ax[-1].plot([0, 5], [1.3, 1.3], 'w--', lw=0.75)
 # Save the figure in path
@@ -82,5 +83,5 @@ if not os.path.exists(path):
     os.system('mkdir %s' % path)
 figname = 'Figures/fig4abc.png'
 print('Saving in %s...' % figname)
-plt.savefig(figname, dpi=300, format='png')
+plt.savefig(figname, dpi=250, format='png')
 print('Done.')

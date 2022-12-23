@@ -28,8 +28,9 @@ bbox = {'linewidth': 0.0, 'facecolor': 'white', 'alpha': 1.0, 'pad': 1}
 label = 'def'
 xl = ['x', 'x', 'k']
 fig, ax = plt.subplots(1, 3, facecolor='w', figsize=(16, 5))
+path = 'Data/'
 for i in range(len(label)):
-    datafile = 'Data/fig4%s.dat' % label[i]
+    datafile = path + 'fig4%s.dat' % label[i]
     # Checks if datafile exists
     if not os.path.isfile(datafile):
         import sys
@@ -82,5 +83,5 @@ if not os.path.exists(path):
     os.system('mkdir %s' % path)
 figname = 'Figures/fig4def.png'
 print('Saving in %s...' % figname)
-plt.savefig(figname, dpi=300, format='png')
+plt.savefig(figname, dpi=250, format='png')
 print('Done.')

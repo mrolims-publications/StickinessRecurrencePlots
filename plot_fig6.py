@@ -40,10 +40,11 @@ bbox = {'linewidth': 0.0, 'facecolor': 'white', 'alpha': 1.0, 'pad': 1}
 ####################
 
 Ntot = int(1e7)
+n = 200
 exponent = np.log10(Ntot)
 base = int(Ntot/10**exponent)
 path = 'Data/'
-datafile = path + 'fig6a_black_Ntot=%ie%i.dat' % (base, exponent)
+datafile = path + 'fig6a_black_Ntot=%ie%i_n=%i.dat' % (base, exponent, n)
 # Checks if datafile exists
 if not os.path.isfile(datafile):
     import sys
@@ -73,7 +74,7 @@ ax[0].text(xbox, ybox, '(a)', transform=ax[0].transAxes, bbox=bbox)
 Ntot = int(1e11)
 exponent = int(np.log10(Ntot))
 base = int(Ntot/10**exponent)
-datafile = path + 'fig6b_Ntot=%ie%i.dat' % (base, exponent)
+datafile = path + 'fig6b_Ntot=%ie%i_n=%i.dat' % (base, exponent, n)
 # Checks if datafile exists
 if not os.path.isfile(datafile):
     import sys
@@ -96,7 +97,6 @@ print('Plotting the data...')
 ax[1].plot(t1a, Q1a, 'o', c=color1, markersize=ms)
 ax[1].plot(t1b, Q1b, 'o', c=color2, markersize=ms)
 ax[1].plot(t1c, Q1c, 'o', c=color3, markersize=ms)
-ax[1].plot(t3, Q3, 'k-', markersize=ms)
 ax[1].plot(t2, Q2, 'ko', markersize=ms)
 ax[1].set_xscale('log')
 ax[1].set_yscale('log')
@@ -107,6 +107,18 @@ ax[1].text(xbox, ybox, '(b)', transform=ax[1].transAxes, bbox=bbox)
 ax[1].set_ylim(1e-6, 1e0)
 ax[1].set_xticks([1e0, 1e1, 1e2, 1e3, 1e4])
 ax[1].set_yticks([1e0, 1e-2, 1e-4, 1e-6])
+
+ax_ins = ax[1].inset_axes([0.57, 0.515, 0.395, 0.44])
+ax_ins.plot(t3, Q3, 'k-')
+ax_ins.set_yscale('log')
+ax_ins.set_xlabel('$\\tau$', fontsize=23)
+ax_ins.set_ylabel('$Q(\\tau)$', fontsize=23)
+ax_ins.tick_params(axis='x', which='major', pad=10, labelsize=20)
+ax_ins.tick_params(axis='y', which='major', labelsize=20)
+ax_ins.set_xlim(t3.min(), t3.max())
+ax_ins.set_yticks([1e0, 1e-2, 1e-4, 1e-6])
+ax_ins.set_ylim([1e-6, 1e0])
+ax_ins.set_xlim([0, 100])
 
 _ = plt.subplots_adjust(left=0.15, bottom=0.07, right=0.96, top=0.975, hspace=0.22, wspace=0.25)
 figname = 'Figures/fig6.png'
