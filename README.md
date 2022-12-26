@@ -36,7 +36,7 @@ To obtain the data used in Figure 6, execute ``` python fig5a.py 1e11 200 ```, `
 
 ## Citation
 
-[arXiv](https://doi.org/10.48550/arXiv.2212.12316)
+[arXiv](https://doi.org/10.48550/arXiv.2212.12316)\
 [Zenodo](https://doi.org/10.5281/zenodo.7390148)
 
 ## Contact
