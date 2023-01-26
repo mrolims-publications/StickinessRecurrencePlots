@@ -21,7 +21,7 @@ import os
 from functions import plot_params
 
 # Define the parameters of the plot
-plot_params(fontsize=21, xtick_labelsize=23, ytick_labelsize=23, axes_labelsize=26)
+plot_params(fontsize=21, tick_labelsize=23, axes_labelsize=26)
 # (x, y) position of the label box
 xbox = 0.0065
 ybox = 0.9445
