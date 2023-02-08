@@ -1,14 +1,7 @@
 import numpy as np
 import pandas as pd
 import os
-
-def corr_coef(x, y):
-    std_x = np.std(x)
-    std_y = np.std(y)
-    covxy = np.cov(x, y)[0][1]
-    cc = covxy/(std_x*std_y)
-
-    return cc
+from functions import corr_coef
 
 cc = np.zeros(4)
 
