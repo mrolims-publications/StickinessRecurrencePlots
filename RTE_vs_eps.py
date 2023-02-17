@@ -1,6 +1,6 @@
 import numpy as np # NumPy module
 from joblib import Parallel, delayed # Module to create parallel loops
-from functions import lyapunov, RTE_border # Module with the standard map functions
+from functions import lyapunov, RTE_border, RTE_border_v2, RTE_border_v3 # Module with the standard map functions
 from functions import corr_coef
 
 # Number of points in k
@@ -24,10 +24,16 @@ lyap = lyapunov(x, p, k, T)
 # Obtains the rte for the array above using parallel computing.
 # n_jobs=-1 uses all available threads. Set it to another value if you 
 # wish to use less.
-rte = [Parallel(n_jobs=-1)(delayed(RTE_border)(x, p, k[i], T, teps=teps[j]) for i in range(L)) for j in range(len(teps))]
+rte = [Parallel(n_jobs=-1)(delayed(RTE_border)(x, p, k[i], T, eps=teps[j]) for i in range(L)) for j in range(len(teps))]
+rte2 = [Parallel(n_jobs=-1)(delayed(RTE_border_v2)(x, p, k[i], T, eps=teps[j]) for i in range(L)) for j in range(len(teps))]
+rte3 = [Parallel(n_jobs=-1)(delayed(RTE_border_v3)(x, p, k[i], T, eps=teps[j]) for i in range(L)) for j in range(len(teps))]
 
 with open("Data/cc_vs_eps.dat", "w") as df:
-    cc = []
+    cc1 = []
+    cc2 = []
+    cc3 = []
     for i in range(len(teps)):
-        cc.append(corr_coef(lyap, rte[i]))
-        df.write("%.16f %.16f\n" % (teps[i], cc[i]))
+        cc1.append(corr_coef(lyap, rte[i]))
+        cc2.append(corr_coef(lyap, rte2[i]))
+        cc3.append(corr_coef(lyap, rte3[i]))
+        df.write("%.16f %.16f\n" % (teps[i], cc1[i], cc2[i], cc3[i]))
