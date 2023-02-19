@@ -34,6 +34,10 @@ To obtain the data used in Figure 5, execute ``` python fig5a.py 1e10 200 ```, `
 
 To obtain the data used in Figure 6, execute ``` python fig5a.py 1e11 200 ```, ``` python fig5a.py 1e7 200 ``` and ``` python fig6b.py ```. Then execute ``` python plot_fig6.py ``` to plot the data.
 
+## Figure 7
+
+To obtain the data used in Figure 7, execute ``` python fig_appendix.py ```.
+
 ## Citation
 
 [arXiv](https://doi.org/10.48550/arXiv.2212.12316)\

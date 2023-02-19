@@ -1,3 +1,13 @@
+"""
+Generates the data of Figure 7. Simply run
+
+    $ python fig_appendix.py
+
+Execution time: few hours
+Author: Matheus Rolim Sales
+Last modified: 19/02/2023
+"""
+
 import numpy as np # NumPy module
 from joblib import Parallel, delayed # Module to create parallel loops
 from functions import lyapunov, RTE_border, RTE_border_v2, RTE_border_v3 # Module with the standard map functions

@@ -13,14 +13,17 @@ It contains the following functions:
     * stdmap - return the time series 
     * RTE - return the recurrence time entropy
     * FTRTE - return the finite-time recurrence time entropy distribution
-    * RTE_border - return the recurrence time entropy considering border effects
+    * RTE_border - return the recurrence time entropy considering border effects with the concatenation approach
+    * RTE_border_v2 - return the recurrence time entropy considering border effects with the norm approach, with maximum norm
+    * RTE_border_v3 - return the recurrence time entropy considering border effects with the norm approach, with Euclidean norm
     * FTRTE_border - return the finite-time recurrence time entropy distribution considering border effects
     * get_trappingtimes - return the trapping times
     * get_Qtau - return the cumulative distribution of trapping times
     * plot_params - adjust the parameters for plotting and returns the color map used in Figs. 4 and 5
+    * corr_coef - return the correlation coefficient between two time series
 
 Author: Matheus Rolim Sales
-Last modified: 08/02/2023
+Last modified: 19/02/2023
 """
 
 import numpy as np # NumPy module
@@ -293,6 +296,7 @@ def white_vertline_distr(recmat):
 def RTE_border(x0, y0, k, T, metric='supremum', lmin=1, eps=10/100, return_last_pos=False):
     """
     Return the recurrence time entropy (RTE) [1-3] given an initial condition (x0, y0) considering border effects [4] when evaluating the distribution of white vertical lines.
+    The standard deviation is calculated using the concatenation approach described in the Appendix A.
 
     Parameters
     ----------
@@ -308,7 +312,7 @@ def RTE_border(x0, y0, k, T, metric='supremum', lmin=1, eps=10/100, return_last_
         The metric for measuring distances in phase space. Possible values are 'supremum', 'manhattan', 'euclidean' (default='supremum').
     lmin : int, optional
         Minimal length of white vertical lines used in the RTE computation (default=1).
-    teps : float, optional
+    eps : float, optional
         Threshold for the recurrence plot in unit of time series standard deviation (default=10/100).
     return_last_pos : bool, optional
         If True, also return the last position of the orbit. (default=False).
@@ -343,6 +347,7 @@ def RTE_border(x0, y0, k, T, metric='supremum', lmin=1, eps=10/100, return_last_
 def RTE_border_v2(x0, y0, k, T, metric='supremum', lmin=1, eps=10/100, return_last_pos=False):
     """
     Return the recurrence time entropy (RTE) [1-3] given an initial condition (x0, y0) considering border effects [4] when evaluating the distribution of white vertical lines.
+    The standard deviation is calculated using the norm approach, with maximum norm, described in the Appendix A.
 
     Parameters
     ----------
@@ -358,7 +363,7 @@ def RTE_border_v2(x0, y0, k, T, metric='supremum', lmin=1, eps=10/100, return_la
         The metric for measuring distances in phase space. Possible values are 'supremum', 'manhattan', 'euclidean' (default='supremum').
     lmin : int, optional
         Minimal length of white vertical lines used in the RTE computation (default=1).
-    teps : float, optional
+    eps : float, optional
         Threshold for the recurrence plot in unit of time series standard deviation (default=10/100).
     return_last_pos : bool, optional
         If True, also return the last position of the orbit. (default=False).
@@ -394,6 +399,7 @@ def RTE_border_v2(x0, y0, k, T, metric='supremum', lmin=1, eps=10/100, return_la
 def RTE_border_v3(x0, y0, k, T, metric='supremum', lmin=1, eps=10/100, return_last_pos=False):
     """
     Return the recurrence time entropy (RTE) [1-3] given an initial condition (x0, y0) considering border effects [4] when evaluating the distribution of white vertical lines.
+    The standard deviation is calculated using the norm approach, with Euclidean norm, described in the Appendix A.
 
     Parameters
     ----------
@@ -409,7 +415,7 @@ def RTE_border_v3(x0, y0, k, T, metric='supremum', lmin=1, eps=10/100, return_la
         The metric for measuring distances in phase space. Possible values are 'supremum', 'manhattan', 'euclidean' (default='supremum').
     lmin : int, optional
         Minimal length of white vertical lines used in the RTE computation (default=1).
-    teps : float, optional
+    eps : float, optional
         Threshold for the recurrence plot in unit of time series standard deviation (default=10/100).
     return_last_pos : bool, optional
         If True, also return the last position of the orbit. (default=False).
