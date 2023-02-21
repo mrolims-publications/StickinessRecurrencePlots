@@ -360,7 +360,7 @@ def RTE_border(x0, y0, k, T, metric='supremum', lmin=1, eps=10/100, threshold_ep
     else:
         return - (p_normed*np.log(p_normed)).sum()
     
-def FTRTE_border(x0, y0, k, n, Ntot, metric='supremum', lmin=1, teps=10/100, threshold_eps=True, approach="maximum"):
+def FTRTE_border(x0, y0, k, n, Ntot, metric='supremum', lmin=1, eps=10/100, threshold_eps=True, approach="maximum"):
     """
     Calculates the finite-time recurrence time entropy (FTRTE) [1-3] considering border effects [4] on the distribution of white vertical lines.
 
@@ -380,7 +380,7 @@ def FTRTE_border(x0, y0, k, n, Ntot, metric='supremum', lmin=1, teps=10/100, thr
         The metric for measuring distances in phase space. Possible values are 'supremum', 'manhattan', 'euclidean' (default='supremum').
     lmin : int, optional
         Minimal length of white vertical lines used in the RTE computation (default=1).
-    teps : float, optional
+    eps : float, optional
         Threshold for the recurrence plot in unit of time series standard deviation (default=10/100).
     threshold_eps : bool, optional
         If True, generates the recurrence plot using a fixed threshold in units of the time series standard deviation (default=True)
@@ -390,28 +390,6 @@ def FTRTE_border(x0, y0, k, n, Ntot, metric='supremum', lmin=1, teps=10/100, thr
     Returns
     -------
     out : ndarray
-        Array with the FTRTE distribution.
-    """
-
-    """
-    Return the finite-time recurrence time entropy (FTRTE) [1-3] distibution considering border effects when evaluating the distribution of white vertical lines [4].
-
-    Parameters
-    ----------
-    x0 : float
-        The initial value of the x-coordinate.
-    y0 : float
-        The initial value of the y-coordinate.
-    k : float
-        The non-linearity parameter of the map.
-    n : int
-        The number of iterations (length of the orbit - finite-time).
-    Ntot : int
-        The total number of iterations.
-
-    Return
-    ------
-    out: narray
         Array with the FTRTE distribution.
 
     References
@@ -426,7 +404,7 @@ def FTRTE_border(x0, y0, k, n, Ntot, metric='supremum', lmin=1, teps=10/100, thr
     x = x0
     y = y0
     for i in range(N):
-        ftrte[i], x, y = RTE_border(x, y, k, n, metric=metric, lmin=lmin, teps=teps, return_last_pos=True,  threshold_eps=threshold_eps, approach=approach)
+        ftrte[i], x, y = RTE_border(x, y, k, n, metric=metric, lmin=lmin, eps=eps, return_last_pos=True,  threshold_eps=threshold_eps, approach=approach)
 
     return ftrte
 
