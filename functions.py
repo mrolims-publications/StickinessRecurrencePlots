@@ -339,7 +339,7 @@ def RTE_border(x0, y0, k, T, metric='supremum', lmin=1, eps=10/100, threshold_ep
 
     if threshold_eps:
         if approach == "concatenation":
-            rp = RP(time_series, metric=metric, normalize=False, threshold_std=eps, silence_level=2)
+            eps = time_series.std()*eps
         elif approach == "maximum":
             eps = max(np.std(time_series[:, 0]), np.std(time_series[:, 1]))*eps
         elif approach == "euclidean":
@@ -347,8 +347,7 @@ def RTE_border(x0, y0, k, T, metric='supremum', lmin=1, eps=10/100, threshold_ep
         else:
             print("Invalid approach!")
             sys.exit()
-    else:
-        rp = RP(time_series, metric=metric, normalize=False, threshold=eps, silence_level=2)
+    rp = RP(time_series, metric=metric, normalize=False, threshold=eps, silence_level=2)
     recmat = rp.recurrence_matrix()
     p = white_vertline_distr(recmat)
     p = p[lmin:]

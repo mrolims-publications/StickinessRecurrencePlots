@@ -24,7 +24,7 @@ To obtain the data used in Figure 3, execute ``` python fig3.py ```, and then ``
 
 ## Figure 4
 
-To obtain the data used in Figures 4(a) and 4(b), execute ``` python fig4ab.py a ``` and ``` python fig4ab.py b ```, and to obtain the data used in Figure 4(c), execute ``` python fig4ab.py c ```. To obtain the data used in Figures 4(d) and 4(e), execute ``` python fig4de.py d ``` and ``` python fig4de.py e ```, and to obtain the data used in Figure 4(f), execute ``` python fig4f.py ```. Then execute ``` python plot_fig4abc.py ``` and ``` python plot_fig4def.py ``` to plot the data.
+To obtain the data used in Figures 4(a) and 4(b), execute ``` python fig4ab.py a ``` and ``` python fig4ab.py b ```, and to obtain the data used in Figure 4(c), execute ``` python fig4c.py ```. To obtain the data used in Figures 4(d) and 4(e), execute ``` python fig4de.py d ``` and ``` python fig4de.py e ```, and to obtain the data used in Figure 4(f), execute ``` python fig4f.py ```. Then execute ``` python plot_fig4abc.py ``` and ``` python plot_fig4def.py ``` to plot the data.
 
 ## Figure 5
 
