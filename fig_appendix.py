@@ -46,4 +46,4 @@ with open("Data/cc_vs_eps.dat", "w") as df:
         cc1.append(corr_coef(lyap, rte[i]))
         cc2.append(corr_coef(lyap, rte2[i]))
         cc3.append(corr_coef(lyap, rte3[i]))
-        df.write("%.16f %.16f\n" % (teps[i], cc1[i], cc2[i], cc3[i]))
+        df.write("%.16f %.16f %.16f %.16f\n" % (teps[i], cc1[i], cc2[i], cc3[i]))
