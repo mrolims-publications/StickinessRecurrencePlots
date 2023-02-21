@@ -10,7 +10,7 @@ Last modified: 19/02/2023
 
 import numpy as np # NumPy module
 from joblib import Parallel, delayed # Module to create parallel loops
-from functions import lyapunov, RTE_border, RTE_border_v2, RTE_border_v3 # Module with the standard map functions
+from functions import lyapunov, RTE_border # Module with the standard map functions
 from functions import corr_coef
 
 # Number of points in k
@@ -34,9 +34,9 @@ lyap = lyapunov(x, p, k, T)
 # Obtains the rte for the array above using parallel computing.
 # n_jobs=-1 uses all available threads. Set it to another value if you 
 # wish to use less.
-rte = [Parallel(n_jobs=-1)(delayed(RTE_border)(x, p, k[i], T, eps=teps[j]) for i in range(L)) for j in range(len(teps))]
-rte2 = [Parallel(n_jobs=-1)(delayed(RTE_border_v2)(x, p, k[i], T, eps=teps[j]) for i in range(L)) for j in range(len(teps))]
-rte3 = [Parallel(n_jobs=-1)(delayed(RTE_border_v3)(x, p, k[i], T, eps=teps[j]) for i in range(L)) for j in range(len(teps))]
+rte = [Parallel(n_jobs=-1)(delayed(RTE_border)(x, p, k[i], T, eps=teps[j], approach="concatenation") for i in range(L)) for j in range(len(teps))]
+rte2 = [Parallel(n_jobs=-1)(delayed(RTE_border)(x, p, k[i], T, eps=teps[j]) for i in range(L)) for j in range(len(teps))]
+rte3 = [Parallel(n_jobs=-1)(delayed(RTE_border)(x, p, k[i], T, eps=teps[j], approach="euclidean") for i in range(L)) for j in range(len(teps))]
 
 with open("Data/cc_vs_eps.dat", "w") as df:
     cc1 = []

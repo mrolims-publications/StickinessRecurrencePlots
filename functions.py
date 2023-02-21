@@ -32,6 +32,7 @@ from pyunicorn.timeseries import RecurrencePlot as RP # Pyunicorn module to crea
 # Plotting modules
 import matplotlib.pyplot as plt
 import matplotlib as mpl
+import sys
 
 @vectorize(['f8(f8, f8, f8, i8)', 'f4(f4, f4, f4, i4)'],
            target='parallel',
@@ -293,7 +294,7 @@ def white_vertline_distr(recmat):
     
     return P
 
-def RTE_border(x0, y0, k, T, metric='supremum', lmin=1, eps=10/100, return_last_pos=False):
+def RTE_border(x0, y0, k, T, metric='supremum', lmin=1, eps=10/100, threshold_eps=True, approach="maximum", return_last_pos=False):
     """
     Return the recurrence time entropy (RTE) [1-3] given an initial condition (x0, y0) considering border effects [4] when evaluating the distribution of white vertical lines.
     The standard deviation is calculated using the concatenation approach described in the Appendix A.
@@ -314,6 +315,10 @@ def RTE_border(x0, y0, k, T, metric='supremum', lmin=1, eps=10/100, return_last_
         Minimal length of white vertical lines used in the RTE computation (default=1).
     eps : float, optional
         Threshold for the recurrence plot in unit of time series standard deviation (default=10/100).
+    threshold_eps : bool, optional
+        If True, generates the recurrence plot using a fixed threshold in units of the time series standard deviation (default=True)
+    approach : str, optional
+        The approach for calculating the standard deviation. Possible values are 'concatenation', 'maximum', 'euclidean' (default='maximum')
     return_last_pos : bool, optional
         If True, also return the last position of the orbit. (default=False).
 
@@ -331,7 +336,19 @@ def RTE_border(x0, y0, k, T, metric='supremum', lmin=1, eps=10/100, return_last_
     [4] K. H. Kraemer and N. Marwan, Border effect corrections for diagonal line based recurrence quantification analysis measures, Physics Letters A 383, 125977 (2019)
     """
     time_series = stdmap(x0, y0, k, T)
-    rp = RP(time_series, metric=metric, normalize=False, threshold_std=eps, silence_level=2)
+
+    if threshold_eps:
+        if approach == "concatenation":
+            rp = RP(time_series, metric=metric, normalize=False, threshold_std=eps, silence_level=2)
+        elif approach == "maximum":
+            eps = max(np.std(time_series[:, 0]), np.std(time_series[:, 1]))*eps
+        elif approach == "euclidean":
+            eps = np.sqrt(np.std(time_series[:, 0])**2 + np.std(time_series[:, 1])**2)*eps
+        else:
+            print("Invalid approach!")
+            sys.exit()
+    else:
+        rp = RP(time_series, metric=metric, normalize=False, threshold=eps, silence_level=2)
     recmat = rp.recurrence_matrix()
     p = white_vertline_distr(recmat)
     p = p[lmin:]
@@ -344,111 +361,7 @@ def RTE_border(x0, y0, k, T, metric='supremum', lmin=1, eps=10/100, return_last_
     else:
         return - (p_normed*np.log(p_normed)).sum()
     
-def RTE_border_v2(x0, y0, k, T, metric='supremum', lmin=1, eps=10/100, return_last_pos=False):
-    """
-    Return the recurrence time entropy (RTE) [1-3] given an initial condition (x0, y0) considering border effects [4] when evaluating the distribution of white vertical lines.
-    The standard deviation is calculated using the norm approach, with maximum norm, described in the Appendix A.
-
-    Parameters
-    ----------
-    x0 : float
-        The initial value of the x-coordinate.
-    y0 : float
-        The initial value of the y-coordinate.
-    k : float
-        The non-linearity parameter of the map.
-    T : int
-        The number of iterations (length of the orbit).
-    metric : str, optional
-        The metric for measuring distances in phase space. Possible values are 'supremum', 'manhattan', 'euclidean' (default='supremum').
-    lmin : int, optional
-        Minimal length of white vertical lines used in the RTE computation (default=1).
-    eps : float, optional
-        Threshold for the recurrence plot in unit of time series standard deviation (default=10/100).
-    return_last_pos : bool, optional
-        If True, also return the last position of the orbit. (default=False).
-
-    Returns
-    -------
-    out : tuple or float
-        If `return_last_pos=False` (default), returns the RTE. 
-        If `return_last_pos=True`, returns a tuple (RTE, x, y), where `x` and `y` are the last position in phase space.
-
-    References
-    ----------
-    [1] http://www.pik-potsdam.de/~donges/pyunicorn/api/timeseries/recurrence_plot.html
-    [2] M. A. Little et al., Exploiting nonlinear recurrence and fractal scaling properties for voice disorder detection, BioMedical Engineering OnLine 6, 23 (2007)
-    [3] K. H. Kraemer et al., Recurrence threshold selection for obtaining robust recurrence characteristics in different embedding dimensions, Chaos 28, 085720 (2018)
-    [4] K. H. Kraemer and N. Marwan, Border effect corrections for diagonal line based recurrence quantification analysis measures, Physics Letters A 383, 125977 (2019)
-    """
-    time_series = stdmap(x0, y0, k, T)
-    eps = max(np.std(time_series[:, 0]), np.std(time_series[:, 1]))*eps
-    rp = RP(time_series, metric=metric, normalize=False, threshold=eps, silence_level=2)
-    recmat = rp.recurrence_matrix()
-    p = white_vertline_distr(recmat)
-    p = p[lmin:]
-    p = np.extract(p != 0, p)
-
-    p_normed = p/p.sum()
-
-    if return_last_pos:
-        return (- (p_normed*np.log(p_normed)).sum(), time_series[-1, 0], time_series[-1, 1])
-    else:
-        return - (p_normed*np.log(p_normed)).sum()
-    
-def RTE_border_v3(x0, y0, k, T, metric='supremum', lmin=1, eps=10/100, return_last_pos=False):
-    """
-    Return the recurrence time entropy (RTE) [1-3] given an initial condition (x0, y0) considering border effects [4] when evaluating the distribution of white vertical lines.
-    The standard deviation is calculated using the norm approach, with Euclidean norm, described in the Appendix A.
-
-    Parameters
-    ----------
-    x0 : float
-        The initial value of the x-coordinate.
-    y0 : float
-        The initial value of the y-coordinate.
-    k : float
-        The non-linearity parameter of the map.
-    T : int
-        The number of iterations (length of the orbit).
-    metric : str, optional
-        The metric for measuring distances in phase space. Possible values are 'supremum', 'manhattan', 'euclidean' (default='supremum').
-    lmin : int, optional
-        Minimal length of white vertical lines used in the RTE computation (default=1).
-    eps : float, optional
-        Threshold for the recurrence plot in unit of time series standard deviation (default=10/100).
-    return_last_pos : bool, optional
-        If True, also return the last position of the orbit. (default=False).
-
-    Returns
-    -------
-    out : tuple or float
-        If `return_last_pos=False` (default), returns the RTE. 
-        If `return_last_pos=True`, returns a tuple (RTE, x, y), where `x` and `y` are the last position in phase space.
-
-    References
-    ----------
-    [1] http://www.pik-potsdam.de/~donges/pyunicorn/api/timeseries/recurrence_plot.html
-    [2] M. A. Little et al., Exploiting nonlinear recurrence and fractal scaling properties for voice disorder detection, BioMedical Engineering OnLine 6, 23 (2007)
-    [3] K. H. Kraemer et al., Recurrence threshold selection for obtaining robust recurrence characteristics in different embedding dimensions, Chaos 28, 085720 (2018)
-    [4] K. H. Kraemer and N. Marwan, Border effect corrections for diagonal line based recurrence quantification analysis measures, Physics Letters A 383, 125977 (2019)
-    """
-    time_series = stdmap(x0, y0, k, T)
-    eps = np.sqrt(np.std(time_series[:, 0])**2 + np.std(time_series[:, 1])**2)*eps
-    rp = RP(time_series, metric=metric, normalize=False, threshold=eps, silence_level=2)
-    recmat = rp.recurrence_matrix()
-    p = white_vertline_distr(recmat)
-    p = p[lmin:]
-    p = np.extract(p != 0, p)
-
-    p_normed = p/p.sum()
-
-    if return_last_pos:
-        return (- (p_normed*np.log(p_normed)).sum(), time_series[-1, 0], time_series[-1, 1])
-    else:
-        return - (p_normed*np.log(p_normed)).sum()
-    
-def FTRTE_border(x0, y0, k, n, Ntot, metric='supremum', lmin=1, teps=10/100):
+def FTRTE_border(x0, y0, k, n, Ntot, metric='supremum', lmin=1, teps=10/100, threshold_eps=True, approach="maximum"):
     """
     Calculates the finite-time recurrence time entropy (FTRTE) [1-3] considering border effects [4] on the distribution of white vertical lines.
 
@@ -470,6 +383,10 @@ def FTRTE_border(x0, y0, k, n, Ntot, metric='supremum', lmin=1, teps=10/100):
         Minimal length of white vertical lines used in the RTE computation (default=1).
     teps : float, optional
         Threshold for the recurrence plot in unit of time series standard deviation (default=10/100).
+    threshold_eps : bool, optional
+        If True, generates the recurrence plot using a fixed threshold in units of the time series standard deviation (default=True)
+    approach : str, optional
+        The approach for calculating the standard deviation. Possible values are 'concatenation', 'maximum', 'euclidean' (default='maximum')
 
     Returns
     -------
@@ -510,7 +427,7 @@ def FTRTE_border(x0, y0, k, n, Ntot, metric='supremum', lmin=1, teps=10/100):
     x = x0
     y = y0
     for i in range(N):
-        ftrte[i], x, y = RTE_border(x, y, k, n, metric=metric, lmin=lmin, teps=teps, return_last_pos=True)
+        ftrte[i], x, y = RTE_border(x, y, k, n, metric=metric, lmin=lmin, teps=teps, return_last_pos=True,  threshold_eps=threshold_eps, approach=approach)
 
     return ftrte
 
