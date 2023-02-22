@@ -11,6 +11,7 @@ Last modified: 02/12/2022
 from functions import stdmap # Module with the standard map functions
 from pyunicorn.timeseries import RecurrencePlot as RP # Pyunicorn module to create the recurrence plots
 import os # Module to check if the directory exists
+import numpy as np
 
 # Non-linearity parameter
 k = 1.5
@@ -32,7 +33,9 @@ recmats = []
 # Iterates the initial conditions and store the orbit's recurrence matrices
 for i in range(len(x0)):
     time_series = stdmap(x0[i], p0[i], k, N)
-    rp = RP(time_series, metric='supremum', normalize=False, threshold_std=10/100, silence_level=2)
+    eps = 10/100
+    eps = max(np.std(time_series[:, 0]), np.std(time_series[:, 1]))*eps
+    rp = RP(time_series, metric='supremum', normalize=False, threshold=eps, silence_level=2)
     recmats.append(rp.recurrence_matrix())
     print(recmats[i].shape)
 # Saves the data
