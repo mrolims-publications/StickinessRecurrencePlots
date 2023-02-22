@@ -34,16 +34,16 @@ x0 = -3.0
 p0 = 0
 # Fig 5bc - blue
 s01a = 0.6
-sf1a = 0.9
+sf1a = 0.8
 # Fig 5bc - red
-s01b = 1.2
-sf1b = 1.305
+s01b = 1.25
+sf1b = 1.33
 # Fig 5bc - green
 s01c = sf1b
-sf1c = 1.513
+sf1c = 1.48
 # Fig 5bc - black
 s02 = s01c
-sf2 = 1.66
+sf2 = 1.55
 # Fig 6a - black
 s03 = 2.5
 sf3 = 4

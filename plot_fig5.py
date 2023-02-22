@@ -63,16 +63,16 @@ df = pd.read_csv(datafile, header=None, delim_whitespace=True)
 X = np.array(df[0])
 # Fig 5bc - blue
 s01a = 0.6
-sf1a = 0.9
+sf1a = 0.8
 # Fig 5bc - red
-s01b = 1.2
-sf1b = 1.311
+s01b = 1.25
+sf1b = 1.33
 # Fig 5bc - green
 s01c = sf1b
-sf1c = 1.513
+sf1c = 1.48
 # Fig 5bc - black
-s02 = 1.513
-sf2 = 1.66
+s02 = sf1c
+sf2 = 1.55
 bin_heights, bin_borders, _ = ax[0].hist(X, density=True, histtype='step', color='k', bins='auto')
 bin_widths = np.diff(bin_borders)
 bin_centers = bin_borders[:-1] + bin_widths / 2
