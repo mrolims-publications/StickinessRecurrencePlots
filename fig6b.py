@@ -1,11 +1,11 @@
 """
 Generates the data of Figure 6(b). Simply run
 
-    $ python fig6b.py
+    $ python fig6b.py 1e11 200
 
 Make sure to run
 
-    $ python fig5a.py 1e11
+    $ python fig5a.py 1e11 200
 
 before running this code.
 
@@ -20,9 +20,11 @@ import os # Module to check if the directory exists
 from functions import get_trappingtimes, get_Qtau
 
 # Total number of iterations
-Ntot = int(1e11)
+Ntot = int(float(sys.argv[1]))
 exponent = int(np.log10(Ntot))
 base = int(Ntot/10**exponent)
+# Finite-time
+n = int(sys.argv[2]) #200
 # Path to where the data will be stored
 path = 'Data/'
 # Checks if path exists
@@ -30,7 +32,7 @@ if not os.path.exists(path):
     # If not, creates path
     os.system('mkdir %s' % path)
 # Name of the file
-datafile = path + 'fig5a_Ntot=%ie%i.dat' % (base, exponent)
+datafile = path + 'fig5a_Ntot=%ie%i_n=%i.dat' % (base, exponent, n)
 # Checks if datafile exists
 if not os.path.isfile(datafile):
     import sys
@@ -114,7 +116,7 @@ t2, Q2 = get_Qtau(sorted_tau2, nts)
 print('Calculating Q 6 - black...')
 t3, Q3 = get_Qtau(sorted_tau3, nts)
 
-datafile = path + 'fig6b_Ntot=%ie%i.dat' % (base, exponent)
+datafile = path + 'fig6b_Ntot=%ie%i_n=%i.dat' % (base, exponent, n)
 print('Writing to the file %s...' % datafile)
 with open(datafile, 'w') as df:
     for j in range(nts):
