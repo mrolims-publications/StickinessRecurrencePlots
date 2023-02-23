@@ -18,6 +18,7 @@ import numpy as np # NumPy module
 import pandas as pd # Pandas module to extract the data
 import os # Module to check if the directory exists
 from functions import get_trappingtimes, get_Qtau
+import sys
 
 # Total number of iterations
 Ntot = int(float(sys.argv[1]))
@@ -35,7 +36,6 @@ if not os.path.exists(path):
 datafile = path + 'fig5a_Ntot=%ie%i_n=%i.dat' % (base, exponent, n)
 # Checks if datafile exists
 if not os.path.isfile(datafile):
-    import sys
     print('%s does not exist!\nDid you run fig5a.py?\nStopping execution...' % (datafile))
     sys.exit()
 print('Extracting data from %s...' % datafile)
