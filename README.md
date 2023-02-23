@@ -32,7 +32,7 @@ To obtain the data used in Figure 5, execute ``` python fig5a.py 1e10 200 ```, `
 
 ## Figure 6
 
-To obtain the data used in Figure 6, execute ``` python fig5a.py 1e11 200 ```, ``` python fig5a.py 1e7 200 ``` and ``` python fig6b.py ```. Then execute ``` python plot_fig6.py ``` to plot the data.
+To obtain the data used in Figure 6, execute ``` python fig5a.py 1e11 200 ```, ``` python fig5bc_6a.py 1e7 200 ``` and ``` python fig6b.py ```. Then execute ``` python plot_fig6.py ``` to plot the data.
 
 ## Figure 7
 
