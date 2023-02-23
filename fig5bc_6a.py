@@ -7,7 +7,7 @@ Generates the data of Figures 5(b), 5(c) and 6(a). Simply run
 
 Execution time: minutes
 Author: Matheus Rolim Sales
-Last modified: 05/12/2022
+Last modified: 23/02/2023
 """
 
 import numpy as np # NumPy module
@@ -42,7 +42,7 @@ sf1b = 1.33
 s01c = sf1b
 sf1c = 1.48
 # Fig 5bc - black
-s02 = s01c
+s02 = sf1c
 sf2 = 1.55
 # Fig 6a - black
 s03 = 2.5

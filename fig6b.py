@@ -11,7 +11,7 @@ before running this code.
 
 Execution time: minutes
 Author: Matheus Rolim Sales
-Last modified: 05/12/2022
+Last modified: 23/02/2023
 """
 
 import numpy as np # NumPy module
@@ -43,16 +43,16 @@ df = pd.read_csv(datafile, header=None, delim_whitespace=True)
 x = np.array(df[0])
 # Fig 5bc - blue
 s01a = 0.6
-sf1a = 0.9
+sf1a = 0.8
 # Fig 5bc - red
-s01b = 1.2
-sf1b = 1.311
+s01b = 1.25
+sf1b = 1.33
 # Fig 5bc - green
 s01c = sf1b
-sf1c = 1.513
+sf1c = 1.48
 # Fig 5bc - black
-s02 = 1.513
-sf2 = 1.66
+s02 = sf1c
+sf2 = 1.55
 # Fig 6a - black
 s03 = 2.5
 sf3 = 4.0
