@@ -24,10 +24,10 @@ base = int(Ntot/10**exponent)
 
 path = 'Data/'
 
-datafile1a = path + 'fig5b_blue_Ntot=%ie%i.dat' % (base, exponent)
-datafile1b = path + 'fig5b_red_Ntot=%ie%i.dat' % (base, exponent)
-datafile1c = path + 'fig5b_green_Ntot=%ie%i.dat' % (base, exponent)
-datafile2 = path + 'fig5b_black_Ntot=%ie%i.dat' % (base, exponent)
+datafile1a = path + 'fig5b_blue_Ntot=%ie%i_n=%i.dat' % (base, exponent, n)
+datafile1b = path + 'fig5b_red_Ntot=%ie%i_n=%i.dat' % (base, exponent, n)
+datafile1c = path + 'fig5b_green_Ntot=%ie%i_n=%i.dat' % (base, exponent, n)
+datafile2 = path + 'fig5b_black_Ntot=%ie%i_n=%i.dat' % (base, exponent, n)
 
 
 print('Extracting data from %s...' % datafile1c)
