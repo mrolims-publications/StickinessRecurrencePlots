@@ -22,7 +22,7 @@ Ntot = int(1e9)
 exponent = np.log10(Ntot)
 base = int(Ntot/10**exponent)
 
-path = '/home/matheus/Doutorado/StickinessRecurrencePlots/Data/'
+path = 'Data/'
 
 datafile1a = path + 'fig5b_blue_Ntot=%ie%i.dat' % (base, exponent)
 datafile1b = path + 'fig5b_red_Ntot=%ie%i.dat' % (base, exponent)
