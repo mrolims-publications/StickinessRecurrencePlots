@@ -40,6 +40,7 @@ To obtain the data used in Figure 7, execute ``` python fig_appendix.py ```.
 
 ## Citation
 
+[Chaos](https://doi.org/10.1063/5.0140613)\
 [arXiv](https://doi.org/10.48550/arXiv.2212.12316)\
 [Zenodo](https://doi.org/10.5281/zenodo.7390148)
 

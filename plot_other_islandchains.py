@@ -35,17 +35,17 @@ df = pd.read_csv(datafile1c, header=None, delim_whitespace=True)
 x1 = np.array(df[0])
 y1 = np.array(df[1])
 
-print('Extracting data from %s...' % datafile1c)
+print('Extracting data from %s...' % datafile1b)
 df = pd.read_csv(datafile1b, header=None, delim_whitespace=True)
 x2 = np.array(df[0])
 y2 = np.array(df[1])
 
-print('Extracting data from %s...' % datafile1c)
+print('Extracting data from %s...' % datafile1a)
 df = pd.read_csv(datafile1a, header=None, delim_whitespace=True)
 x3 = np.array(df[0])
 y3 = np.array(df[1])
 
-print('Extracting data from %s...' % datafile1c)
+print('Extracting data from %s...' % datafile2)
 df = pd.read_csv(datafile2, header=None, delim_whitespace=True)
 x4 = np.array(df[0])
 y4 = np.array(df[1])
@@ -69,7 +69,7 @@ if not os.path.isfile(datafile2):
     import sys
     print('%s does not exist!\nDid you run fig5a.py?\nStopping execution...' % (datafile2))
     sys.exit()
-
+print("Plotting...")
 for i in range(len(xis)):
 
     xi = xis[i]
@@ -114,6 +114,7 @@ ax[0].set_ylabel("$p$")
 ax[1].set_yticklabels(["$-\\pi$", "$-1.9$"])
 ax[1].set_xticklabels(["$2.25$", "$\\pi$"])
 figname = 'Figures/island_chains.png'
+print("Saving in %s..." % figname)
 _ = plt.subplots_adjust(left=0.06, bottom=0.18, right=0.98, top=0.966, hspace=0.27, wspace=0.2)
 print('Saving in %s...' % figname)
 plt.savefig(figname, dpi=250, format='png')
