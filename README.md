@@ -1,6 +1,6 @@
 # StickinessRecurrencePlots
 
-Code repository accompanying the publication "*Stickiness and recurrence plots: an entropy based approach*".
+Code repository accompanying the publication "[Stickiness and recurrence plots: An entropy based approach](https://doi.org/10.1063/5.0140613)".
 
 This project contains the code to generate and plot the data from all figures. It uses the [pyunicorn package](http://www.pik-potsdam.de/~donges/pyunicorn/) to create the recurrence plots.
 
@@ -40,10 +40,25 @@ To obtain the data used in Figure 7, execute ``` python fig_appendix.py ```.
 
 ## Citation
 
-[Chaos](https://doi.org/10.1063/5.0140613)\
-[arXiv](https://doi.org/10.48550/arXiv.2212.12316)\
-[Zenodo](https://doi.org/10.5281/zenodo.7390148)
+If you use this repository or parts of it in your work, please consider citing our research paper:
+
+*M. Rolim Sales et al.*, **Stickiness and recurrence plots: An entropy based approach**, *[Chaos 33, 033140 (2023)](https://doi.org/10.1063/5.0140613)*.
+
+```bibtex
+@article{RolimSales2023,
+author = {Sales, Matheus R. and Mugnaine, Michele and Szezech Jr., José D., and Viana, Ricardo L. and Caldas, Iberê L. and Marwan, Norbert and Kurths, Jürgen},
+title = {Stickiness and recurrence plots: An entropy-based approach},
+journal = {Chaos: An Interdisciplinary Journal of Nonlinear Science},
+volume = {33},
+number = {3},
+pages = {033140},
+year = {2023},
+month = {03},
+doi = {10.1063/5.0140613},
+url = {https://doi.org/10.1063/5.0140613},
+}
+```
 
 ## Contact
 
-[matheusrolim95@gmail.com](mailto:matheusrolim95@gmail.com)
+[rolim.sales.m[at]gmail.com](mailto:rolim.sales.m@gmail.com)
